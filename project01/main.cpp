@@ -98,9 +98,6 @@ int main(int argc, char **argv) {
       if (strlen(token) > 0) {
         /* Check for tokens that straddle buffers */
         if (&token[strlen(token)] == &buff[BUFFER_SIZE - 1]) {
-          fprintf(stderr, "\e[1mFound token straddling buffer\e[0m\n");
-          fprintf(stderr, "\e[1mOld token: '%s'\e[0m\n",
-              token);
           size_t oldLength = strlen(token);
           memcpy(tempBuff, token, oldLength);
           /* Read further in the file to get the rest of the token */
@@ -110,17 +107,12 @@ int main(int argc, char **argv) {
           token = strtok(buff, sep);
           if (token != buff) {
             /* The token did not actually straddle buffers */
-            fprintf(stderr, "\e[1mThe token did not actually straddle the buffer!\e[0m\n");
             tempBuff[oldLength] = '\0';
-            fprintf(stderr, "\e[1mSecond word: '%s'\e[0m\n",
-                token);
             addWord(token, wordTotal, wordFrequency);
           } else {
             memcpy(tempBuff + oldLength, token, strlen(token) + 1);
           }
           token = tempBuff;
-          fprintf(stderr, "\e[1mNew token: '%s'\e[0m\n",
-              token);
         }
         /* We found a word; add it to the frequency map */
         addWord(token, wordTotal, wordFrequency);
